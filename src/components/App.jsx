@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
+import { useLocalStorage } from './hooks/Hooks';
 import Form from './contact-form/ContactForm';
 import Filter from './filter/Filter';
 import ContactList from './contact-list/ContactList';
@@ -15,16 +16,8 @@ const App = () => {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ];
 
-  const [contacts, setContacts] = useState(() => {
-    const value = JSON.parse(localStorage.getItem('contacts'));
-    return value ?? arrayContacts;
-  });
-
+  const [contacts, setContacts] = useLocalStorage('contacts', arrayContacts);
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const submitContact = data => {
     if (isRepeat(data)) {
